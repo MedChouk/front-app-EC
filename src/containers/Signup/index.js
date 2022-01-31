@@ -1,78 +1,104 @@
-import React from 'react';
+/* eslint-disable no-undef */
+import React, { useState } from 'react';
 import  Layout  from '../../components/Layout';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
+import { signup } from '../../actions';
 import Input from '../../components/UI/Input';
+import { Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Signup(props) {
+/**
+* @author
+* @function Signup
+**/
+
+
+const Signup = (props) => {
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const auth = useSelector(state => state.auth);
+  const user = useSelector(state => state.user);
+
+  const dispatch = useDispatch();
+
+  const userSignup = (e) => {
+    e.preventDefault();
+    
+    const user = {
+      firstName,
+      lastName,
+      email,
+      password
+    }
+    dispatch(signup(user));
+  }
+ 
+  if(auth.authenticate){
+    return <Redirect to={`/`} />
+  }
+
+  if (user.loading) {
+    return <h1>Loading .... </h1>
+  }
+
   return (
     <Layout>
-    <Container>
-      <Row style={{ marginTop: '50px' }}>
-        <Col md={{span: 6, offset: 3}}>
-          <Form>
-            <Row>
-{/*                 <Col md={6}>
-                  <Form.Group className="mb-3" controlId="formBasicFirstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text" placeholder="Enter first name " />
-                  </Form.Group>
-                </Col> */}
+      <Container>
+        { user.message }
+        <Row style={{ marginTop: "50px" }}>
+          <Col md={{ span: 6, offset: 3 }}>
+            <Form onSubmit={userSignup}>
+              <Row>
                 <Col md={6}>
-                  <Input 
+                  <Input
                     label="First Name"
-                    placeholder="Enter First Name"
-                    value=""
+                    placeholder="First Name"
+                    value={firstName}
                     type="text"
-                    onChange={ () => {
-
-                    }}
+                    onChange={(e) => setFirstName(e.target.value)}
                   />
                 </Col>
                 <Col md={6}>
-                  <Input 
-                      label="Last Name"
-                      placeholder="Enter Last Name"
-                      value=""
-                      type="text"
-                      onChange={ () => {
-
-                      }}
-                    />
+                  <Input
+                    label="Last Name"
+                    placeholder="Last Name"
+                    value={lastName}
+                    type="text"
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
                 </Col>
-            </Row>
+              </Row>
 
-            <Input 
-              label="Email"
-              placeholder="Enter Email"
-              value=""
-              type="email"
-              onChange={ () => {
+              <Input
+                label="Email"
+                placeholder="Email"
+                value={email}
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
 
-              }}
-            />
-
-            <Input 
-              label="Password"
-              placeholder="Enter Password"
-              value=""
-              type="password"
-              onChange={ () => {
-
-              }}
-            />
-
-            <div className="d-grid gap-2 mt-2">
-            <Button variant="outline-secondary" type="submit">
-              Submit
-            </Button>
-            </div>
-
-          </Form>
-        </Col>
-      </Row>
-    </Container>
-  </Layout>
-  )
+              <Input
+                label="Password"
+                placeholder="Password"
+                value={password}
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <div className="d-grid gap-2 mt-2">
+                <Button variant="outline-primary" type="submit">
+                  Submit
+                </Button>
+              </div>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </Layout>
+  );
 }
 
 export default Signup
