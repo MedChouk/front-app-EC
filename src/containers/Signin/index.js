@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react';
 import  Layout  from '../../components/Layout';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { login } from '../../actions';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-function Signin(props) {
+
+/**
+* @author
+* @function Signin
+**/
+
+const Signin = (props) => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const auth = useSelector(state => state.auth);
 
   const dispatch = useDispatch();
 
@@ -13,11 +25,16 @@ function Signin(props) {
     e.preventDefault();
     
     const user = {
-      email:'chouk@gmail.com',
-       password: '123456'
+      email,
+       password
     }
     dispatch(login(user));
   }
+
+  if(auth.authenticate){
+    return <Redirect to={`/`} />
+  }
+
   return (
   <Layout>
     <Container>
@@ -27,21 +44,21 @@ function Signin(props) {
             <Input 
                 label="Email"
                 placeholder="Enter Email"
-                value=""
+                value={email}
                 type="email"
-                onChange={ () => {
-
-                }}
+                onChange={ (e) => setEmail(
+                  e.target.value
+                )}
               />
 
             <Input 
               label="Password"
               placeholder="Enter Password"
-              value=""
+              value={password}
               type="password"
-              onChange={ () => {
-
-              }}
+              onChange={ (e) => setPassword(
+                e.target.value
+              )}
             />
             <div className="d-grid gap-2 mt-2">
             <Button variant="outline-primary" type="submit">
