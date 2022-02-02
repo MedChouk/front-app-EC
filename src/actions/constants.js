@@ -3,6 +3,8 @@ export const authConstants = {
     LOGIN_FAILURE: 'LOGIN_FAILURE',
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
     LOGOUT_REQUEST: 'LOGOUT_REQUEST',
+    LOGOUT_FAILURE: 'LOGOUT_FAILURE',
+    LOGOUT_SUCCESS: 'LOGOUT_SUCCESS'
 }
 
 export const userContants = {
