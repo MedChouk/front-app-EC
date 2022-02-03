@@ -9,6 +9,7 @@ import {Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/HOC/PrivateRoute';
 import { isUserLoggedIn } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
+import { Category } from './containers/Category/index';
 
 
 
@@ -30,6 +31,7 @@ function App() {
             <PrivateRoute path="/" exact component={Home} />
             <PrivateRoute path="/products" exact component={Products} />
             <PrivateRoute path="/orders" exact component={Orders} />
+            <PrivateRoute path="/category" exact component={Category} />
             <Route path="/signin" component={Signin}/>
             <Route path="/signup" component={Signup}/>
         </Switch>

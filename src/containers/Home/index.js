@@ -1,14 +1,15 @@
 import React from 'react';
 import Layout from '../../components/Layout';
-import { Row, Container, Col } from 'react-bootstrap';
+
 import './style.css';
-import { NavLink } from 'react-router-dom';
 
 
 function Home(props) {
   return (
-    <Layout>
-        <Container fluid>
+    <Layout sidebar>
+      <h1>Container</h1> 
+
+{/*         <Container fluid>
           <Row>
             <Col md={2} className="sidebar">
               <ul>
@@ -21,7 +22,7 @@ function Home(props) {
               <h1>Container</h1> 
             </Col>
           </Row>
-      </Container>
+      </Container> */}
 
 {/*      <Jumbotron style={{padding: '3rem', margin:'1rem', background: '#f8f8f8'}} className="text-center">
             <h1>Welcome to Admin Dashboard</h1>
