@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
-import Layout from '../../components/Layout'
+import React, { useState } from 'react';
+import Layout from '../../components/Layout';
 import { Col, Container, Row, Modal, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ export const Category = (props) => {
     const handleShow = () => setShow(true);
     const dispatch = useDispatch();
 
-    
+
     const handleClose = () => {
 
         const form = new FormData();
@@ -40,17 +40,11 @@ export const Category = (props) => {
             parentCategoryId, 
             categoryImage
         };
- 
+
         console.log(cat)
         setShow(false);
         
     }
-
-    useEffect(() => {
-        console.log(`Category.js`);
-        dispatch(getAllCategory());
-
-    }, []);
 
     const renderCategories = (categories) => {
         let myCategories = [];
@@ -67,7 +61,6 @@ export const Category = (props) => {
     }
 
     const createCategoryList = (categories, options = []) => {
-
         for (let category of categories) {
             options.push({
                 value: category._id,
@@ -79,69 +72,66 @@ export const Category = (props) => {
                 createCategoryList(category.children, options)
             }
         }
-
         return options;
     }
 
-        const handleCategoryImage = (e) => {
-        setCategoryImage(e.target.files[0]);
+    const handleCategoryImage = (e) => {
+    setCategoryImage(e.target.files[0]);
     }
-
 
   return(
     
-      <Layout sidebar>
-        <Container>
-                <Row>
-                    <Col md={12}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
-                            <h3>Category</h3>
-                            <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add  </Button>
+    <Layout sidebar>
+    <Container>
+        <Row>
+            <Col md={12}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+                    <h3>Category</h3>
+                    <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add category </Button>
 
-                        </div>
-                        <Col md={2}>
-                            <ul>
-                                { renderCategories(category.categories) }
+                </div>
+                <Col md={2}>
+                    <ul>
+                        { renderCategories(category.categories) }
 
-                            </ul>
-                        </Col>
-                    </Col>
-                </Row> 
-            </Container>
-            <>
-
-                <Modal
-                    show={show}
-                    onHide={handleClose}
-                    backdrop="static"
-                    keyboard={false}
-                >
-                    <Modal.Header>
-                    <Modal.Title>Add New Category</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Input 
-                            value={categoryName}
-                            placeholder={'categoryName'}
-                            onChange={(e) => setCategoryName(e.target.value)}
-                        />
-                        <select className="form-control" value={parentCategoryId} onChange={(e) => setParentCategoryId(e.target.value)}>
-                            <option>Select category</option>
-                            {
-                                createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
-                            }
-                        </select>
-                        <Input type="file" name="categoryImage" onChange={handleCategoryImage} />
-                    </Modal.Body>
-                    <Modal.Footer>
-                    <Button variant="secondary" onClick={Close}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={handleClose}>Save</Button>
-                    </Modal.Footer>
-                </Modal>
-            </>
-      </Layout>
+                    </ul>
+                </Col>
+            </Col>
+        </Row> 
+    </Container>
+    <>
+    <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+    >
+        <Modal.Header>
+        <Modal.Title>Add New Category</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+            <Input 
+                value={categoryName}
+                placeholder={'categoryName'}
+                onChange={(e) => setCategoryName(e.target.value)}
+            />
+            <select className="form-control" value={parentCategoryId} onChange={(e) => setParentCategoryId(e.target.value)}>
+                <option>Select category</option>
+                {
+                    createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
+                }
+            </select>
+            <Input type="file" name="categoryImage" onChange={handleCategoryImage} />
+        </Modal.Body>
+        <Modal.Footer>
+        <Button variant="secondary" onClick={Close}>
+            Close
+        </Button>
+        <Button variant="primary" onClick={handleClose}>Save</Button>
+        </Modal.Footer>
+    </Modal>
+    </>
+    </Layout>
    )
 
  }
