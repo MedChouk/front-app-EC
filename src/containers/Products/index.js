@@ -1,10 +1,13 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
-import { Col, Container, Row, Modal, Button } from 'react-bootstrap';
+import { Col, Container, Row, Button, Table } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
+import Model from '../../components/UI/Modal';
 import Layout from '../../components/Layout';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../actions';
+
 
 /**
 * @author
@@ -20,6 +23,7 @@ export const Products = (props) => {
   const [categoryId, setCategoryId] = useState("");
   const [productPictures, setProductPictures] = useState([]);
   const category = useSelector((state) => state.category);
+  const product = useSelector((state) => state.product);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
   const Close = () => setShow(false);
@@ -41,6 +45,39 @@ export const Products = (props) => {
     dispatch(addProduct(form));
 
     setShow(false);
+  };
+
+  const renderProducts = () => {
+    return (
+      <Table responsive="sm">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {product.products.length > 0
+            ? product.products.map((product) => (
+                <tr key={product._id}>
+                  <td>2</td>
+                  <td>{product.name}</td>
+                  <td>{product.price}</td>
+                  <td>{product.quantity}</td>
+                  <td>{product.category.name}</td>
+                  <td>
+                      *******
+                  </td>
+                </tr>
+              ))
+            : null}
+        </tbody>
+      </Table>
+    );
   };
 
   const createCategoryList = (categories, options = []) => {
@@ -69,7 +106,7 @@ export const Products = (props) => {
           <Container>
             <Row>
                 <Col md={12}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
                         <h3>Product</h3>
                         <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add product </Button>
 
@@ -82,17 +119,18 @@ export const Products = (props) => {
                     </Col> */}
                 </Col>
             </Row> 
+            <Row>
+              <Col>
+              {renderProducts()}
+              </Col>
+            </Row>
           </Container>
-          <Modal
-              show={show}
-              onHide={handleClose}
-              backdrop="static"
-              keyboard={false}
+
+    <Model
+            show={show}
+            handleClose={handleClose}
+            modalTitle={'Add New Product'}
           >
-        <Modal.Header>
-        <Modal.Title>Add New Product</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
             <Input 
               label="Name"
               value={name}
@@ -139,14 +177,7 @@ export const Products = (props) => {
               name="productPicture"
               onChange={handleProductPictures}
             />
-        </Modal.Body>
-        <Modal.Footer>
-        <Button variant="secondary" onClick={Close}>
-            Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>Save</Button>
-        </Modal.Footer>
-    </Modal>
+    </Model>
     </Layout>
    )
 

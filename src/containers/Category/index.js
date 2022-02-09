@@ -2,11 +2,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
 import Layout from '../../components/Layout';
-import { Col, Container, Row, Modal, Button } from 'react-bootstrap';
+import { Col, Container, Row, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategory, addCategory } from '../../actions';
-
+import Model from '../../components/UI/Modal';
 
 /**
 * @author
@@ -33,6 +33,8 @@ export const Category = (props) => {
         form.append('parentId', parentCategoryId);
         form.append('categoryImage', categoryImage);
         dispatch(addCategory(form));
+        setCategoryName('');
+        setParentCategoryId('');
 
         const cat = {
         
@@ -85,7 +87,7 @@ export const Category = (props) => {
     <Container>
         <Row>
             <Col md={12}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 5 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
                     <h3>Category</h3>
                     <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add category </Button>
 
@@ -100,16 +102,11 @@ export const Category = (props) => {
         </Row> 
     </Container>
     <>
-    <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-    >
-        <Modal.Header>
-        <Modal.Title>Add New Category</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+        <Model
+            show={show}
+            handleClose={handleClose}
+            modalTitle={'Add New Category'}
+        >
             <Input 
                 value={categoryName}
                 placeholder={'categoryName'}
@@ -122,14 +119,7 @@ export const Category = (props) => {
                 }
             </select>
             <Input type="file" name="categoryImage" onChange={handleCategoryImage} />
-        </Modal.Body>
-        <Modal.Footer>
-        <Button variant="secondary" onClick={Close}>
-            Close
-        </Button>
-        <Button variant="primary" onClick={handleClose}>Save</Button>
-        </Modal.Footer>
-    </Modal>
+        </Model>
     </>
     </Layout>
    )

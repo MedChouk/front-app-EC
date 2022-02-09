@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect  } from 'react';
 import './App.css';
 import Home from './containers/Home'; 
@@ -7,9 +8,10 @@ import Signin from './containers/Signin';
 import Signup from './containers/Signup'; 
 import {Route, Switch } from 'react-router-dom';
 import PrivateRoute from './components/HOC/PrivateRoute';
-import { isUserLoggedIn } from './actions';
+import { isUserLoggedIn, getInitialData } from './actions';
 import { useDispatch, useSelector } from 'react-redux';
 import { Category } from './containers/Category/index';
+
 
 
 
@@ -22,7 +24,8 @@ function App() {
     if(!auth.authenticate) {
       dispatch(isUserLoggedIn());
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    console.log(`Data.js`);
+    dispatch(getInitialData());
   }, []);
     
   return (
