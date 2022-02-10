@@ -106,6 +106,7 @@ export const Category = (props) => {
             show={show}
             handleClose={handleClose}
             modalTitle={'Add New Category'}
+            onHide={Close}
         >
             <Input 
                 value={categoryName}

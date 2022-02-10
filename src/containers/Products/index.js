@@ -130,7 +130,9 @@ export const Products = (props) => {
             show={show}
             handleClose={handleClose}
             modalTitle={'Add New Product'}
+            onHide={Close}
           >
+
             <Input 
               label="Name"
               value={name}
@@ -177,6 +179,7 @@ export const Products = (props) => {
               name="productPicture"
               onChange={handleProductPictures}
             />
+             
     </Model>
     </Layout>
    )
