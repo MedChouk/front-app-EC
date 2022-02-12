@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from 'react';
@@ -5,8 +6,11 @@ import { Col, Container, Row, Button, Table } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import Model from '../../components/UI/Modal';
 import Layout from '../../components/Layout';
+import { generatePublicUrl } from '../../urlConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { addProduct } from '../../actions';
+import "./style.css";
+
 
 
 /**
@@ -22,6 +26,8 @@ export const Products = (props) => {
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [productPictures, setProductPictures] = useState([]);
+  const [productDetailModal, setProductDetailModal] = useState(false);
+  const [productDetails, setProductDetails] = useState(null);
   const category = useSelector((state) => state.category);
   const product = useSelector((state) => state.product);
   const [show, setShow] = useState(false);
@@ -47,6 +53,133 @@ export const Products = (props) => {
     setShow(false);
   };
 
+  const renderAddProductModal = () => {
+    return (
+
+      <Model
+      show={show}
+      handleClose={handleClose}
+      modalTitle={'Add New Product'}
+      onHide={Close}
+      >
+
+      <Input 
+        label="Name"
+        value={name}
+        placeholder={`Product Name`}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <Input
+        label="Quantity"
+        value={quantity}
+        placeholder={`Quantity`}
+        onChange={(e) => setQuantity(e.target.value)}
+      />
+      <Input
+        label="Price"
+        value={price}
+        placeholder={`Price`}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+      <Input
+        label="Description"
+        value={description}
+        placeholder={`Description`}
+        onChange={(e) => setDescription(e.target.value)}
+      />
+      <select
+        className="form-control"
+        value={categoryId}
+        onChange={(e) => setCategoryId(e.target.value)}
+      >
+        <option>select category</option>
+        {createCategoryList(category.categories).map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+      {productPictures.length > 0
+        ? productPictures.map((pic, index) => (
+            <div key={index}>{pic.name}</div>
+          ))
+        : null}
+      <input
+        type="file"
+        name="productPicture"
+        onChange={handleProductPictures}
+      />    
+    </Model>
+    );
+  };
+
+  const handleCloseProductDetailsModal = () => {
+    setProductDetailModal(false);
+  };
+
+  const CloseProductDetailsModal = () => {
+    setProductDetailModal(false);
+  };
+
+  const showProductDetailsModal = (product) => {
+    setProductDetails(product); 
+    setProductDetailModal(true);
+  };
+
+  const renderProductDetailsModal = () => {
+    if (!productDetails) {
+      return null;
+    }
+    return (
+      <Model
+      show={productDetailModal}
+      handleClose={handleCloseProductDetailsModal}
+      modalTitle={"Product Details"}
+      size="lg"
+      onHide={CloseProductDetailsModal}
+      >
+        <Row>
+          <Col md="6">
+            <label className="key">Name</label>
+            <p className="value">{productDetails.name}</p>
+          </Col>
+          <Col md="6">
+            <label className="key">Price</label>
+            <p className="value">{productDetails.price}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="6">
+            <label className="key">Quantity</label>
+            <p className="value">{productDetails.quantity}</p>
+          </Col>
+          <Col md="6">
+            <label className="key">Category</label>
+            <p className="value">{productDetails.category.name}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col md="12">
+            <label className="key">Description</label>
+            <p className="value">{productDetails.description}</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <label className="key">Product Pictures</label>
+            <div style={{ display: "flex" }}>
+              {productDetails.productPictures.map((picture, index) => (
+                <div className="productImgContainer" key={index}>
+                  <img src={generatePublicUrl(picture.img)} alt="" />
+                </div>
+              ))}
+            </div>
+          </Col>
+        </Row>
+      </Model>
+    );
+  };
+
   const renderProducts = () => {
     return (
       <Table responsive="sm">
@@ -70,7 +203,7 @@ export const Products = (props) => {
                   <td>{product.quantity}</td>
                   <td>{product.category.name}</td>
                   <td>
-                      *******
+                  <Button variant="outline-success" size="sm" onClick={() => showProductDetailsModal(product)}>  Details product </Button>
                   </td>
                 </tr>
               ))
@@ -103,84 +236,30 @@ export const Products = (props) => {
 
   return(
     <Layout sidebar>
-          <Container>
-            <Row>
-                <Col md={12}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
-                        <h3>Product</h3>
-                        <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add product </Button>
+      <Container>
+        <Row>
+            <Col md={12}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
+                    <h3>Product</h3>
+                    <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add product </Button>
 
-                    </div>
+                </div>
 {/*                     <Col md={2}>
-                        <ul>
-                            { renderCategories(category.categories) }
+                    <ul>
+                        { renderCategories(category.categories) }
 
-                        </ul>
-                    </Col> */}
-                </Col>
-            </Row> 
-            <Row>
-              <Col>
-              {renderProducts()}
-              </Col>
-            </Row>
-          </Container>
-
-    <Model
-            show={show}
-            handleClose={handleClose}
-            modalTitle={'Add New Product'}
-            onHide={Close}
-          >
-
-            <Input 
-              label="Name"
-              value={name}
-              placeholder={`Product Name`}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Input
-              label="Quantity"
-              value={quantity}
-              placeholder={`Quantity`}
-              onChange={(e) => setQuantity(e.target.value)}
-            />
-            <Input
-              label="Price"
-              value={price}
-              placeholder={`Price`}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-            <Input
-              label="Description"
-              value={description}
-              placeholder={`Description`}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <select
-              className="form-control"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-            >
-              <option>select category</option>
-              {createCategoryList(category.categories).map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.name}
-                </option>
-              ))}
-            </select>
-            {productPictures.length > 0
-              ? productPictures.map((pic, index) => (
-                  <div key={index}>{pic.name}</div>
-                ))
-              : null}
-            <input
-              type="file"
-              name="productPicture"
-              onChange={handleProductPictures}
-            />
-             
-    </Model>
+                    </ul>
+                </Col> */}
+            </Col>
+        </Row> 
+        <Row>
+          <Col>
+          {renderProducts()}
+          </Col>
+        </Row>
+      </Container>
+    {renderAddProductModal()}         
+    {renderProductDetailsModal()}                     
     </Layout>
    )
 
