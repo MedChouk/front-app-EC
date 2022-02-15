@@ -57,59 +57,59 @@ export const Products = (props) => {
     return (
 
       <Model
-      show={show}
-      handleClose={handleClose}
-      modalTitle={'Add New Product'}
-      onHide={Close}
+        show={show}
+        handleClose={handleClose}
+        modalTitle={'Add New Product'}
+        onHide={Close}
       >
 
-      <Input 
-        label="Name"
-        value={name}
-        placeholder={`Product Name`}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <Input
-        label="Quantity"
-        value={quantity}
-        placeholder={`Quantity`}
-        onChange={(e) => setQuantity(e.target.value)}
-      />
-      <Input
-        label="Price"
-        value={price}
-        placeholder={`Price`}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-      <Input
-        label="Description"
-        value={description}
-        placeholder={`Description`}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <select
-        className="form-control"
-        value={categoryId}
-        onChange={(e) => setCategoryId(e.target.value)}
-      >
-        <option>select category</option>
-        {createCategoryList(category.categories).map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.name}
-          </option>
-        ))}
-      </select>
-      {productPictures.length > 0
-        ? productPictures.map((pic, index) => (
+        <Input
+          label="Name"
+          value={name}
+          placeholder={`Product Name`}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Input
+          label="Quantity"
+          value={quantity}
+          placeholder={`Quantity`}
+          onChange={(e) => setQuantity(e.target.value)}
+        />
+        <Input
+          label="Price"
+          value={price}
+          placeholder={`Price`}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+        <Input
+          label="Description"
+          value={description}
+          placeholder={`Description`}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <select
+          className="form-control"
+          value={categoryId}
+          onChange={(e) => setCategoryId(e.target.value)}
+        >
+          <option>select category</option>
+          {createCategoryList(category.categories).map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.name}
+            </option>
+          ))}
+        </select>
+        {productPictures.length > 0
+          ? productPictures.map((pic, index) => (
             <div key={index}>{pic.name}</div>
           ))
-        : null}
-      <input
-        type="file"
-        name="productPicture"
-        onChange={handleProductPictures}
-      />    
-    </Model>
+          : null}
+        <input
+          type="file"
+          name="productPicture"
+          onChange={handleProductPictures}
+        />
+      </Model>
     );
   };
 
@@ -122,7 +122,7 @@ export const Products = (props) => {
   };
 
   const showProductDetailsModal = (product) => {
-    setProductDetails(product); 
+    setProductDetails(product);
     setProductDetailModal(true);
   };
 
@@ -132,11 +132,11 @@ export const Products = (props) => {
     }
     return (
       <Model
-      show={productDetailModal}
-      handleClose={handleCloseProductDetailsModal}
-      modalTitle={"Product Details"}
-      size="lg"
-      onHide={CloseProductDetailsModal}
+        show={productDetailModal}
+        handleClose={handleCloseProductDetailsModal}
+        modalTitle={"Product Details"}
+        size="lg"
+        onHide={CloseProductDetailsModal}
       >
         <Row>
           <Col md="6">
@@ -195,18 +195,18 @@ export const Products = (props) => {
         </thead>
         <tbody>
           {product.products.length > 0
-            ? product.products.map((product) => (
-                <tr key={product._id}>
-                  <td>2</td>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.quantity}</td>
-                  <td>{product.category.name}</td>
-                  <td>
+            ? product.products.map((product, index) => (
+              <tr key={product._id}>
+                <td>{index + 1}</td>
+                <td>{product.name}</td>
+                <td>{product.price}</td>
+                <td>{product.quantity}</td>
+                <td>{product.category.name}</td>
+                <td>
                   <Button variant="outline-success" size="sm" onClick={() => showProductDetailsModal(product)}>  Details product </Button>
-                  </td>
-                </tr>
-              ))
+                </td>
+              </tr>
+            ))
             : null}
         </tbody>
       </Table>
@@ -214,18 +214,18 @@ export const Products = (props) => {
   };
 
   const createCategoryList = (categories, options = []) => {
-      for (let category of categories) {
-          options.push({
-              value: category._id,
-              name: category.name,
-              parentId: category.parentId,
-              type: category.type
-          });
-          if (category.children.length > 0) {
-              createCategoryList(category.children, options)
-          }
+    for (let category of categories) {
+      options.push({
+        value: category._id,
+        name: category.name,
+        parentId: category.parentId,
+        type: category.type
+      });
+      if (category.children.length > 0) {
+        createCategoryList(category.children, options)
       }
-      return options;
+    }
+    return options;
   }
 
   const handleProductPictures = (e) => {
@@ -234,33 +234,33 @@ export const Products = (props) => {
 
   console.log("🚀 ~ file: index.js ~ line 49 ~ handleProductPictures ~ productPictures", productPictures);
 
-  return(
+  return (
     <Layout sidebar>
       <Container>
         <Row>
-            <Col md={12}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
-                    <h3>Product</h3>
-                    <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add product </Button>
+          <Col md={12}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
+              <h3>Product</h3>
+              <Button variant="outline-dark" size="lg" onClick={handleShow}>  Add product </Button>
 
-                </div>
-{/*                     <Col md={2}>
+            </div>
+            {/*                     <Col md={2}>
                     <ul>
                         { renderCategories(category.categories) }
 
                     </ul>
                 </Col> */}
-            </Col>
-        </Row> 
+          </Col>
+        </Row>
         <Row>
           <Col>
-          {renderProducts()}
+            {renderProducts()}
           </Col>
         </Row>
       </Container>
-    {renderAddProductModal()}         
-    {renderProductDetailsModal()}                     
+      {renderAddProductModal()}
+      {renderProductDetailsModal()}
     </Layout>
-   )
+  )
 
- }
+}
