@@ -43,7 +43,26 @@ export const addCategory = (form) => {
                     payload: res.data.error
                 });
             }
-        } catch (error) {   
+        } catch (error) {
+            console.log(error.response);
+        }
+
+    }
+}
+
+export const updateCategories = (form) => {
+    return async dispatch => {
+        try {
+            const res = await axios.post(`/category/update`, form);
+            if (res.status === 201) {
+                return true;
+                // eslint-disable-next-line no-unreachable
+                console.log("🚀 ~ file: category.action.js ~ line 58 ~ updateCategory ~ res", res)
+
+            } else {
+                console.log("🚀 ~ file: category.action.js ~ line 61 ~ updateCategory ~ res", res)
+            }
+        } catch (error) {
             console.log(error.response);
         }
 
