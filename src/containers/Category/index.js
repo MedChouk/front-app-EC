@@ -215,7 +215,7 @@ export const Category = (props) => {
                                 />
                             </Col>
                             <Col>
-                                <select className="form-control" value={item.parentId} onChange={(e) => handleCategoryInput('name', e.target.value, index, 'expanded')}>
+                                <select className="form-control" value={item.parentId} onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'expanded')}>
                                     <option>Select category</option>
                                     {
                                         createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
@@ -247,7 +247,7 @@ export const Category = (props) => {
                                 />
                             </Col>
                             <Col>
-                                <select className="form-control" value={item.parentId} onChange={(e) => handleCategoryInput('name', e.target.value, index, 'checked')}>
+                                <select className="form-control" value={item.parentId} onChange={(e) => handleCategoryInput('parentId', e.target.value, index, 'checked')}>
                                     <option>Select category</option>
                                     {
                                         createCategoryList(category.categories).map(option => <option key={option.value} value={option.value}>{option.name}</option>)
