@@ -6,7 +6,7 @@ import Layout from '../../components/Layout';
 import { Col, Container, Row, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCategory, addCategory, updateCategories } from '../../actions';
+import { getAllCategory, addCategory, updateCategories, deleteCategories as deleteCategoriesAction } from '../../actions';
 import Model from '../../components/UI/Modal';
 import CheckboxTree from 'react-checkbox-tree';
 import 'react-checkbox-tree/lib/react-checkbox-tree.css';
@@ -95,8 +95,7 @@ export const Category = (props) => {
         return options;
     }
 
-    const updateCategory = () => {
-        setUpdateCategoryModal(true);
+    const updateCheckedAndExpandedCategories = () => {
         const categories = createCategoryList(category.categories);
         const checkedArray = [];
         const expandedArray = [];
@@ -112,7 +111,12 @@ export const Category = (props) => {
         })
         setCheckedArray(checkedArray);
         setExpandedArray(expandedArray);
-        console.log({ checked, expanded, categories, checkedArray, expandedArray });
+    }
+
+    const updateCategory = () => {
+        updateCheckedAndExpandedCategories();
+        setUpdateCategoryModal(true);
+
     }
 
     const handleCategoryInput = (key, value, index, type) => {
@@ -130,15 +134,12 @@ export const Category = (props) => {
 
     const CloseCategoryModal = () => {
         setUpdateCategoryModal(false);
+        setDeleteCategoryModal(false);
     }
+
 
     const handleCategoryImage = (e) => {
         setCategoryImage(e.target.files[0]);
-    }
-
-
-    const deleteCategory = () => {
-        setDeleteCategoryModal(true);
     }
 
     const renderAddCategoryModal = () => {
@@ -271,6 +272,61 @@ export const Category = (props) => {
         );
     }
 
+    const deleteCategory = () => {
+        updateCheckedAndExpandedCategories();
+        setDeleteCategoryModal(true);
+    }
+
+
+    const deleteCategories = () => {
+        const checkedIdsArray = checkedArray.map((item, index) => ({ _id: item.value }));
+        const expandedIdsArray = expandedArray.map((item, index) => ({ _id: item.value }));
+        const idsArray = expandedIdsArray.concat(checkedIdsArray);
+        dispatch(deleteCategoriesAction(idsArray))
+            .then(result => {
+                if (result) {
+                    dispatch(getAllCategory())
+                    setDeleteCategoryModal(false)
+                }
+            });
+
+        setDeleteCategoryModal(false);
+
+
+    }
+
+    const renderDeleteCategoryModal = () => {
+        return (
+            <Model
+                modalTitle="Confirm"
+                show={deleteCategoryModal}
+                handleClose={() => setDeleteCategoryModal(false)}
+                onHide={CloseCategoryModal}
+                buttons={[
+                    {
+                        label: 'No',
+                        color: 'primary',
+                        onClick: () => {
+                            alert('no');
+                        }
+                    },
+                    {
+                        label: 'Yes',
+                        color: 'danger',
+                        onClick: deleteCategories
+                    }
+                ]}
+            >
+
+                <h5>Expanded</h5>
+                {expandedArray.map((item, index) => <span key={index}>{item.name}</span>)}
+                <h5>Checked</h5>
+                {checkedArray.map((item, index) => <span key={index}>{item.name}</span>)}
+
+            </Model>
+        );
+    }
+
     return (
 
         <Layout sidebar>
@@ -281,14 +337,14 @@ export const Category = (props) => {
                             <h3>Category</h3>
                             <div className="actionBtnContainer mx-2">
                                 <Button className="mx-2" variant="success" size="lg" onClick={handleShow}><IoIosAdd /> Add </Button>
-                                <Button variant="primary" size="lg" onClick={updateCategory}><IoIosCloudUpload />Edit </Button>
+                                <Button variant="secondary" size="lg" onClick={updateCategory}><IoIosCloudUpload />Edit </Button>
                                 <Button className="mx-2" variant="danger" size="lg" onClick={deleteCategory}><IoIosTrash />Delete </Button>
                             </div>
                         </div>
                         <Col md={2}>
                             {/*       <ul>
-                                {renderCategories(category.categories)}
-                            </ul> */}
+                            {renderCategories(category.categories)}
+                        </ul> */}
                             <CheckboxTree
                                 nodes={renderCategories(category.categories)}
                                 checked={checked}
@@ -308,6 +364,7 @@ export const Category = (props) => {
                 </Row>
             </Container>
 
+            {renderDeleteCategoryModal()}
             {renderAddCategoryModal()}
             {renderUpdateCategoryModal()}
         </Layout>
