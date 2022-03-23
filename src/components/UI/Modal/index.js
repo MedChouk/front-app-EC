@@ -22,6 +22,7 @@ function NewModal(props) {
           ))
         ) : (
           <Button
+          {...props}
             variant="primary"
             onClick={props.handleClose}
           >
