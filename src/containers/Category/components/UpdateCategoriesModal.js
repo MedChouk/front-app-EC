@@ -30,7 +30,7 @@ const UpdateCategoryModal = (props) => {
             checkedArray={checkedArray}
         >
             <Row>
-                <Col><h6>Expanded</h6></Col>
+                <Col><h6>Expanded Categories</h6></Col>
             </Row>
             {
                 expandedArray.length > 0 && expandedArray.map((item, index) =>
@@ -51,7 +51,10 @@ const UpdateCategoryModal = (props) => {
                             </select>
                         </Col>
                         <Col>
-                            <select className="form-control">
+                            <select className="form-control"
+                                value={item.type}
+                                onChange={(e) => handleCategoryInput('type', e.target.value, index, 'expanded')}
+                            >
                                 <option value="">Select type</option>
                                 <option value="store">Store</option>
                                 <option value="product">Product</option>
@@ -62,7 +65,7 @@ const UpdateCategoryModal = (props) => {
                 )
             }
             <Row>
-                <Col><h6>Checked</h6></Col>
+                <Col><h6>Checked Categories</h6></Col>
             </Row>
             {
                 checkedArray.length > 0 && checkedArray.map((item, index) =>
@@ -83,7 +86,10 @@ const UpdateCategoryModal = (props) => {
                             </select>
                         </Col>
                         <Col>
-                            <select className="form-control">
+                            <select className="form-control"
+                                value={item.type}
+                                onChange={(e) => handleCategoryInput('type', e.target.value, index, 'checked')}
+                            >
                                 <option value="">Select type</option>
                                 <option value="store">Store</option>
                                 <option value="product">Product</option>

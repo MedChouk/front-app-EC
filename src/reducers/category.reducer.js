@@ -86,7 +86,45 @@ export default (state = initState, action) => {
                 loading: false,
                 error: action.payload.error
             }
-            break;    
+            break;   
+        case categoryConstansts.UPDATE_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstansts.UPDATE_CATEGORIES_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case categoryConstansts.UPDATE_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                error: action.payload.error,
+                loading: false
+            }
+            break; 
+        case categoryConstansts.DELETE_CATEGORIES_REQUEST:
+            state = {
+                ...state,
+                loading: true
+            }
+            break;
+        case categoryConstansts.DELETE_CATEGORIES_SUCCESS:
+            state = {
+                ...state,
+                loading: false
+            }
+            break;
+        case categoryConstansts.DELETE_CATEGORIES_FAILURE:
+            state = {
+                ...state,
+                loading: false,
+                error: action.payload.error
+            }
+            break;        
     }
 
     return state;

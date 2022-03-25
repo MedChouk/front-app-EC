@@ -163,12 +163,7 @@ export const Category = (props) => {
             form.append('parentId', item.parentId ? item.parentId : "");
             form.append('type', item.type);
         });
-        dispatch(updateCategories(form)).then(result => {
-            if (result) {
-                dispatch(getAllCategory())
-            }
-        })
-
+        dispatch(updateCategories(form));
         CloseCategoryModal();
 
     }
@@ -241,7 +236,7 @@ export const Category = (props) => {
                     <Col md={12}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
                             <h3>Category</h3>
-                            <div className="actionBtnContainer mx-2">
+                            <div className="mx-2">
                                 <Button className="mx-2" variant="success" size="lg" onClick={handleShow}><IoIosAdd /> Add </Button>
                                 <Button variant="secondary" size="lg" onClick={updateCategory}><IoIosCloudUpload />Edit </Button>
                                 <Button className="mx-2" variant="danger" size="lg" onClick={deleteCategory}><IoIosTrash />Delete </Button>
@@ -292,7 +287,6 @@ export const Category = (props) => {
                 handleClose={updateCategoriesForm}
                 modalTitle={'Update Categories'}
                 onHide={CloseCategoryModal}
-                size="lg"
                 expandedArray={expandedArray}
                 checkedArray={checkedArray}
                 handleCategoryInput={handleCategoryInput}

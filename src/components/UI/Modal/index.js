@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 
+
 function NewModal(props) {
 
   return (
@@ -22,9 +23,10 @@ function NewModal(props) {
           ))
         ) : (
           <Button
-          {...props}
+            {...props}
             variant="primary"
             onClick={props.handleClose}
+            
           >
             Save
           </Button>
