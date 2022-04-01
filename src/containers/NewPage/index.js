@@ -5,6 +5,7 @@ import Input from '../../components/UI/Input';
 import { Row, Col, Button, Container } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import linearCategories from '../../helpers/linearCategories';
+import { createPage } from '../../actions';
 
 
 /**
@@ -20,9 +21,10 @@ export const NewPage = (props) => {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState('');
   const [desc, setDesc] = useState('');
-
+  const [type, setType] = useState('');
   const [banners, setBanners] = useState([]);
   const [products, setProducts] = useState([]);
+  const dispatch = useDispatch();
 
   const Close = () => {
     setCreateModal(false);
@@ -35,6 +37,14 @@ export const NewPage = (props) => {
 
   console.log('categories', categories);
 
+  const onCategoryChange = (e) => {
+    // eslint-disable-next-line eqeqeq
+    const category = categories.find(category => category.value == e.target.value);
+    setCategoryId(e.target.value);
+    setType(category.type);
+  }
+
+
   const handleBannerImages = (e) => {
     console.log(e);
     setBanners([...banners, e.target.files[0]]);
@@ -45,13 +55,41 @@ export const NewPage = (props) => {
     setProducts([...products, e.target.files[0]]);
   }
 
+  const submitPageForm = (e) => {
+    //e.target.preventDefault();
+
+    if (title === "") {
+      alert('Title is required');
+      setCreateModal(false);
+      return;
+    }
+
+    const form = new FormData();
+    form.append('title', title);
+    form.append('description', desc);
+    form.append('category', categoryId);
+    form.append('type', type);
+    banners.forEach((banner, index) => {
+      form.append('banners', banner);
+    });
+    products.forEach((product, index) => {
+      form.append('products', product);
+    });
+
+    /* console.log({ title, desc, category, banners, products, type }); */
+
+    dispatch(createPage(form));
+
+
+  }
+
 
   const renderCreatePageModal = () => {
     return (
       <Modal
         show={createModal}
         modalTitle={"Create New Page"}
-        handleClose={() => setCreateModal(false)}
+        handleClose={submitPageForm}
         onHide={Close}
       >
         <Container>
@@ -60,12 +98,12 @@ export const NewPage = (props) => {
               <select
                 className="form-control mb-2"
                 value={categoryId}
-                onChange={(e) => setCategoryId(e.target.value)}
+                onChange={onCategoryChange}
               >
                 <option value="">select category</option>
                 {
-                  categories.map(cat =>
-                    <option key={cat._id} value={cat._id}>{cat.name}</option>
+                  categories.map((cat, item) =>
+                    <option key={item} value={cat._id}>{cat.name}</option>
                   )
                 }
               </select>
@@ -89,6 +127,14 @@ export const NewPage = (props) => {
             </Col>
           </Row>
           <Row>
+            {
+              banners.length > 0 ?
+                banners.map((banner, index) =>
+                  <Row key={index}>
+                    <Col>{banner.name}</Col>
+                  </Row>
+                ) : null
+            }
             <Col>
               <Input
                 className="form-control"
@@ -109,6 +155,14 @@ export const NewPage = (props) => {
             </Col>
           </Row>
           <Row>
+            {
+              products.length > 0 ?
+                products.map((product, index) =>
+                  <Row key={index}>
+                    <Col>{product.name}</Col>
+                  </Row>
+                ) : null
+            }
             <Col>
               <Input
                 className="form-control"
