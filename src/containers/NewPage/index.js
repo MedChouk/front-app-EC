@@ -38,8 +38,8 @@ export const NewPage = (props) => {
   console.log('categories', categories);
 
   const onCategoryChange = (e) => {
-    // eslint-disable-next-line eqeqeq
-    const category = categories.find(category => category.value == e.target.value);
+
+    const category = categories.find(category => category._id === e.target.value);
     setCategoryId(e.target.value);
     setType(category.type);
   }
@@ -76,7 +76,7 @@ export const NewPage = (props) => {
       form.append('products', product);
     });
 
-    /* console.log({ title, desc, category, banners, products, type }); */
+    //console.log({ title, desc, category, categoryId, banners, products, type });
 
     dispatch(createPage(form));
 
@@ -95,6 +95,7 @@ export const NewPage = (props) => {
         <Container>
           <Row>
             <Col>
+
               <select
                 className="form-control mb-2"
                 value={categoryId}
@@ -102,8 +103,8 @@ export const NewPage = (props) => {
               >
                 <option value="">select category</option>
                 {
-                  categories.map((cat, item) =>
-                    <option key={item} value={cat._id}>{cat.name}</option>
+                  categories.map(cat =>
+                    <option key={cat._id} value={cat._id}>{cat.name}</option>
                   )
                 }
               </select>
