@@ -25,8 +25,8 @@ function NewModal(props) {
           <Button
             {...props}
             variant="primary"
-            onClick={props.handleClose}
-            
+            onClick={props.onSubmit}
+
           >
             Save
           </Button>

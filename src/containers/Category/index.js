@@ -1,7 +1,7 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../../components/Layout';
 import { Col, Container, Row, Button } from 'react-bootstrap';
 import Input from '../../components/UI/Input';
@@ -45,11 +45,25 @@ export const Category = (props) => {
     const handleShow = () => setShow(true);
     const dispatch = useDispatch();
 
+    useEffect(() => {
+
+        if (!category.loading) {
+            setShow(false);
+        }
+
+    }, [category.loading]);
 
 
     const handleClose = () => {
 
         const form = new FormData();
+
+
+        if (categoryName === "") {
+            alert('Category name is required');
+            setShow(false);
+            return;
+        }
 
         form.append('name', categoryName);
         form.append('parentId', parentCategoryId);
@@ -270,7 +284,7 @@ export const Category = (props) => {
             <AddCategoryModal
 
                 show={show}
-                handleClose={handleClose}
+                onSubmit={handleClose}
                 onHide={Close}
                 modalTitle={'Add New Category'}
                 categoryName={categoryName}
@@ -284,7 +298,7 @@ export const Category = (props) => {
             <UpdateCategoryModal
 
                 show={updateCategoryModal}
-                handleClose={updateCategoriesForm}
+                onSubmit={updateCategoriesForm}
                 modalTitle={'Update Categories'}
                 onHide={CloseCategoryModal}
                 expandedArray={expandedArray}
