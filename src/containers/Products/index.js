@@ -58,7 +58,7 @@ export const Products = (props) => {
 
       <Model
         show={show}
-        handleClose={handleClose}
+        onSubmit={handleClose}
         modalTitle={'Add New Product'}
         onHide={Close}
       >
@@ -133,9 +133,8 @@ export const Products = (props) => {
     return (
       <Model
         show={productDetailModal}
-        handleClose={handleCloseProductDetailsModal}
+        onSubmit={handleCloseProductDetailsModal}
         modalTitle={"Product Details"}
-        size="lg"
         onHide={CloseProductDetailsModal}
       >
         <Row>
